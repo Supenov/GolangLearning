@@ -1,0 +1,528 @@
+Длинный тип переменных
+
+	var number int
+	var text string
+	var boolean bool
+	var floatNumber = 4.2
+
+-------------------------------------------------------------------------------------
+
+Короткий тип переменных
+
+    number := 100
+    text := "Fedor"
+    boolean := false
+    floatNumber := 4.2
+
+-------------------------------------------------------------------------------------
+
+Тройная вложенность
+        score := любое число
+		if score > 10 {
+			if score > 15 {
+				fmt.Println("Ты мега-красавчик!")
+			} else {
+				fmt.Println("Ты красавчик!")
+			}
+		} else {
+			fmt.Println("Тебе ещё многому придётся научиться!")
+		}
+
+
+Двойная вложенность
+
+        score := любое число
+        if score > 15 {
+            fmt.Println("Ты мега-красавчик!")
+        } else if score > 10 {
+            fmt.Println("Ты красавчик!")
+        } else {
+            fmt.Println("Тебе ещё многому придётся научиться!")
+        }
+
+-------------------------------------------------------------------------------------
+
+Условные операторы
+
+    	var score int // Объявляем переменную score типа int
+
+    	fmt.Println("Enter your score:")
+    	fmt.Scan(&score) // Считываем значение score с клавиатуры
+
+
+    	if (score < 6 || score > 16) && score != 0 {
+    		fmt.Println("Ты попал в петушиную зону")
+    	} else if score >= 6 && score <= 16 {
+    		fmt.Println("Ты попал в зону, где ты не петух.")
+    	} else if score == 0 {
+    		fmt.Println("Score равен 0. Проверьте введённые данные.")
+    	} else {
+    		fmt.Println("Произошла ошибка!")
+    	}
+
+-------------------------------------------------------------------------------------
+
+Циклы
+	score := 0
+	fmt.Println("-----------------\n| > GET READY < |\n-----------------")
+
+	for i := 1; i <= 3; i++ {
+		score += 1
+		result := fmt.Sprintf(""+
+			"Вы пролетели через %d трубу\n"+
+			"Счёт: %d",
+			i, score)
+		fmt.Println(result)
+	}
+
+	fmt.Println("-----------------\n| > GAME OVER < |\n-----------------")
+
+-------------------------------------------------------------------------------------
+
+Задержка + цикл
+
+	score := 0
+
+	for i := 1; score < 50; i++ {
+		score += 1
+		randomNumber := rand.Intn(100)
+		fmt.Println(fmt.Sprintf("---------------------\n"+
+			"%d. Random Number: %d", score, randomNumber))
+		time.Sleep(250 * time.Millisecond)
+
+	}
+
+-------------------------------------------------------------------------------------
+
+Функции
+
+(С аргументами)
+func sumNumbers(first int, second int){
+	fmt.Println(first + second)
+}
+
+
+func officiantWork(name string) {
+	fmt.Println("Накрываю на стол!")
+	fmt.Println("Привет, ", name)
+	fmt.Println("Я принял заказ!")
+	fmt.Println("Я принёс блюдо!")
+	fmt.Println("")
+}
+
+-------------------------------------------------------------------------------------
+
+Изменение значений в функции
+
+func main() {
+	number := 5
+	text := "Hello!"
+
+	foo(number, text)
+
+	fmt.Println("n: ", number)
+    fmt.Println("t: ", text)
+}
+
+func foo(n int, t string) {    <-- ВАЖНО !!!
+                               Переменные при вызове функции КОПИРУЮТСЯ !!!
+                               Они будут ссылаться на разные ячейки памяти.
+	fmt.Println("n: ", n)
+	fmt.Println("t: ", t)
+
+	n = 100
+	t = "Меня поменяли!"
+
+	fmt.Println("n2: ", n)
+	fmt.Println("t2: ", t)
+
+}
+
+-------------------------------------------------------------------------------------
+
+Возврат значений из функции (return)
+
+
+
+Пример 1
+
+func main() {
+	number := 10
+	number2 := 55
+
+	fmt.Println(sum(number, number2))
+}
+
+func sum(a int, b int) int {
+	fmt.Println("a", a)
+	fmt.Println("b", b)
+	s := a + b
+
+	return s
+
+}
+
+
+
+Пример 2
+
+func main() {
+	greeting("Fedor")
+}
+
+func greeting(name string) {
+
+	if name == "" {
+		fmt.Println("Вы передали пустое имя :(")
+		return
+	}
+
+	fmt.Println("Здравствуйте,", name + ".")
+}
+
+-------------------------------------------------------------------------------------
+
+Анонимные функции
+
+package main
+
+import "fmt"
+
+func main()  {
+	fmt.Println("Я main и я начался")
+
+	// Анонимные функции выполнятся в КОНЦЕ !!!
+	// Отложенные вызовы выполняются в обратном порядке.
+	defer func() {
+		fmt.Println("Я main и я закончился")
+	}()
+
+	hello()
+}
+
+func hello()  {
+	fmt.Println("Я hello и я начался")
+	defer func() {
+		fmt.Println("Я hello и я закончился")
+	}()
+
+	fmt.Println("Я функция hello 1")
+	fmt.Println("Я функция hello 2")
+	fmt.Println("Я функция hello 3")
+}
+
+//Я main и я начался
+//Я hello и я начался
+//Я функция hello 1
+//Я функция hello 2
+//Я функция hello 3
+//Я hello и я закончился
+//Я main и я закончился
+
+-------------------------------------------------------------------------------------
+
+Указатели
+
+package main
+
+import (
+	"fmt"
+)
+
+func main()  {
+	number := 5
+	pointer := &number // Создаём указатель, который ссылается на переменную number
+
+
+	fmt.Println("До изменений:")
+	foo(pointer)
+	fmt.Println("Переменная изменилась через функцию")
+
+
+	fmt.Println("После изменений:", number)
+	fmt.Println("Разыменовывание указателя \"pointer\":", *pointer)
+}
+
+// При вызове foo создаётся еще один указатель, который ссылается на number
+func foo(n *int)  {
+	//fmt.Println(n) 	// Адрес переменной number в памяти (0xc00008c0a8)
+	fmt.Println(*n) // Разыменовывание указателя "n"
+
+	*n = 10 // Изменяем значение переменной с помощью указателя
+			// Мы изменили значение переменной для ВСЕХ указателей.
+}
+
+-------------------------------------------------------------------------------------
+
+СТРУКТУРЫ
+
+//////////////////////////////////////////////////////////////////////
+Часть 1
+
+
+package main
+
+import "fmt"
+
+// Структура
+type User struct {
+	Name string
+	Age int
+	PhoneNumber string
+	IsClose bool
+	Rating float64
+}
+
+
+// Greeting - метод структуры User
+func (u User)Greeting()  {
+	fmt.Println("Всем привет!")
+	fmt.Println("Меня зовут", u.Name)
+	fmt.Println("Мой рейтинг", u.Rating)
+	fmt.Println("")
+}
+
+// Goodbye - метод структуры User
+func (u User)Goodbye()  {
+	fmt.Println("До свидания!")
+	fmt.Println("Меня звали", u.Name)
+	fmt.Println("Мой рейтинг был", u.Rating)
+	fmt.Println("")
+}
+
+
+func main()  {
+
+	// Создаём экземпляр User
+	user := User{
+		Name: "Oleg",
+		Age: 64,
+		PhoneNumber: "8 800 555 35 35",
+		IsClose: true,
+		Rating: 5.5,
+	}
+
+	//fmt.Println("User", user)
+
+	fmt.Println("Имя до изменения:", user.Name)
+
+	user.Name = "Fedor" // Изменяем имя на другое
+
+	fmt.Println("Имя после изменения:", user.Name)
+	fmt.Println("")
+
+	user.Greeting() // Используем метод Greeting
+	user.Goodbye() // Используем метод Goodbye
+}
+
+//////////////////////////////////////////////////////////////////////
+
+
+
+Часть 2
+
+package main
+
+import "fmt"
+
+// Структура
+type User struct {
+	
+	Name string
+	Age int
+	PhoneNumber string
+	IsClose bool
+	Rating float64
+	
+}
+
+
+// Greeting - метод структуры User
+func (u User)Greeting()  {
+	fmt.Println("Всем привет!")
+	fmt.Println("Меня зовут", u.Name)
+	fmt.Println("Мой рейтинг", u.Rating)
+	fmt.Println("")
+}
+
+// Goodbye - метод структуры User
+func (u User)Goodbye()  {
+	fmt.Println("До свидания!")
+	fmt.Println("Меня звали", u.Name)
+	fmt.Println("Мой рейтинг был", u.Rating)
+	fmt.Println("")
+}
+
+// Получаем доступ к оригиналу через указатель (u *User)
+func (u *User) RatingUp(rating float64) {
+	if u.Rating + rating <= 10.0 {
+		u.Rating += rating
+		fmt.Println("Я добавил рейтинг:", rating)
+	} else {
+		fmt.Println("Я не прошел валидацию!")
+	}
+}
+
+
+func main()  {
+
+	// Создаём экземпляр User
+	user := User{
+		Name:        "Oleg",
+		Age:         64,
+		PhoneNumber: "8 800 555 35 35",
+		IsClose:     true,
+		Rating:      5.5,
+	}
+
+	fmt.Println("Рейтинг ДО изменений", user.Rating)
+	user.RatingUp(1.5)
+	fmt.Println("Рейтинг ПОСЛЕ изменений", user.Rating)
+}
+
+//////////////////////////////////////////////////////////////////////
+
+
+Часть 3
+
+package main
+
+import "fmt"
+
+func main()  {
+
+	user := NewUser( // Создаём user через Конструктор
+		"Фёдор",
+		50,
+		"8 800 555 35 35",
+		false,
+		4.5,
+	)
+
+	user.ChangeName("Fedor")
+	fmt.Println(user.Name)
+	user.RatingDOWN(2)
+	user.RatingUP(5)
+	fmt.Println(user)
+
+}
+
+// Структура
+type User struct {
+
+	Name string
+	Age int
+	PhoneNumber string
+	IsClose bool
+	Rating float64
+
+}
+
+
+// Конструктор для User
+func NewUser(
+	name string,
+	age int,
+	phoneNumber string,
+	isClose bool,
+	rating float64,
+	) User {
+
+	if name == "" {
+		return User{}
+	}
+
+	if age <= 0 || age > 150 {
+		return User{}
+	}
+
+	if phoneNumber == "" {
+		return User{}
+	}
+
+	if rating < 0.0 || rating > 10 {
+		return User{}
+	}
+
+	// Если валидация прошла успешно, возвращаем все значения
+	return User{
+		Name: name,
+		Age: age,
+		PhoneNumber: phoneNumber,
+		IsClose: isClose,
+		Rating: rating,
+	}
+}
+
+// Изменить имя
+func (u *User) ChangeName(newName string) {
+	if newName != "" {
+		u.Name = newName
+	}
+}
+
+// Изменить возраст
+func (u *User) ChangeAge(newAge int) {
+	if newAge > 0 && newAge < 150 {
+		u.Age = newAge
+	}
+}
+
+// Изменить телефон
+func (u *User) ChangePhoneNumber(newNumber string) {
+	if newNumber != "" {
+		u.PhoneNumber = newNumber
+	}
+}
+
+// Закрыть аккаунт
+func (u *User) CloseAccount() {
+	u.IsClose = true
+}
+
+// Открыть аккаунт
+func (u *User) OpenAccount() {
+	u.IsClose = false
+}
+
+// Увеличить рейтинг
+func (u *User) RatingUP(rating float64) {
+	if u.Rating + rating <= 10.0 {
+		u.Rating += rating
+	}
+}
+
+// Понизить рейтинг
+func (u *User) RatingDOWN(rating float64) {
+	if u.Rating - rating >= 1 {
+		u.Rating -= rating
+	}
+}
+//////////////////////////////////////////////////////////////////////
+
+
+-------------------------------------------------------------------------------------
+
+Модули и пакеты
+
+package main
+
+// Импортируем другие пакеты
+import (
+	"github.com/Supenov/GolangLearning/greeting"
+	"github.com/Supenov/GolangLearning/user"
+)
+
+func main() {
+	u := user.User{}
+
+	u.Name = "Fedor"
+	greeting.SayBad() // ВАЖНО !!!
+	                  // ЕСЛИ ИМЯ ФУНКЦИИ / МЕТОД / СТРУКТУРА
+	                  // БУДУТ НАПИСАНЫ С МАЛЕНЬКОЙ БУКВЫ,
+	                  // МЫ НЕ СМОЖЕМ ИСПОЛЬЗОВАТЬ ИХ В ДРУГИХ ФАЙЛАХ !!!
+	greeting.SayHello()
+}
+
+-------------------------------------------------------------------------------------
+
