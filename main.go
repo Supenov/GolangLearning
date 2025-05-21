@@ -2,10 +2,18 @@ package main
 
 import "fmt"
 
-func main() {
-	arr := [5]int{5, 66, 7, 100, 1}
+type User struct {
+	Name    string
+	Age     int
+	Premium bool
+}
 
-	for i := 0; i < 5; i++ {
-		fmt.Println(string(rune(i))+":", arr[i])
+func main() {
+	user := User{
+		Name:    "Fedor",
+		Age:     18,
+		Premium: true,
 	}
+
+	fmt.Println(user.Name)
 }
